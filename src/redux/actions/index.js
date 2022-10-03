@@ -1,15 +1,7 @@
-const INITIAL_STATE = {
-  currencies: [],
-  allValueBRL: 0,
-  editor: false,
-  idToEdit: 0,
-};
-
-wallet = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-  default:
-    return state;
-  }
-};
-
-export default wallet;
+export const SUBMIT_EMAIL = 'SUBMIT_EMAIL';
+export const submitEmail = (email) => ({
+  type: SUBMIT_EMAIL,
+  payload: {
+    email,
+  },
+});
