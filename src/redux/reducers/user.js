@@ -6,12 +6,11 @@ const INITIAL_STATE = {
 
 const stateFolder = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case SUBMIT_EMAIL: {
+  case SUBMIT_EMAIL:
     return {
       ...state,
-      email: action.payload.email,
+      email: action.email,
     };
-  }
   default:
     return state;
   }

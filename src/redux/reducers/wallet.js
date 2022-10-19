@@ -1,9 +1,10 @@
 import {
   REQUEST_API,
+  DATA,
+  FAIL_TO_CONNECT,
   SUM_EXPENSES,
-  ARR_EXPENSES,
   ALL_EXPENSES,
-  SUM_EDIT,
+  ARR_EXPENSES,
 } from '../actions/index';
 
 const INITIAL_STATE = {
@@ -19,20 +20,26 @@ const wallet = (state = INITIAL_STATE, action) => {
   case REQUEST_API: {
     return {
       ...state,
-      currencies: Object.keys(action.payload.currencies),
+      loading: true,
     };
   }
+  case DATA:
+    return {
+      ...state,
+      currencies: action.data,
+      error: '',
+      loading: false,
+    };
+  case FAIL_TO_CONNECT:
+    return {
+      ...state,
+      loading: false,
+      error: action.error,
+    };
   case SUM_EXPENSES: {
     return {
       ...state,
-      expenses: state.expenses.concat(action.payload.expenses),
-    };
-  }
-  case ARR_EXPENSES: {
-    return {
-      ...state,
-      expenses: action.payload.expenses,
-      editor: false,
+      expenses: state.expenses.concat(action.expenses),
     };
   }
   case ALL_EXPENSES: {
@@ -42,11 +49,11 @@ const wallet = (state = INITIAL_STATE, action) => {
       editor: false,
     };
   }
-  case SUM_EDIT: {
+  case ARR_EXPENSES: {
     return {
       ...state,
-      idToEdit: action.payload.idToEdit,
-      editor: true,
+      expenses: action.payload.expenses,
+      editor: false,
     };
   }
   default:

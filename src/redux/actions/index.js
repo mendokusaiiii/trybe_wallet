@@ -3,39 +3,40 @@ import currenciesAPI from '../../services/currenciesAPI';
 export const SUBMIT_EMAIL = 'SUBMIT_EMAIL';
 export const submitEmail = (email) => ({
   type: SUBMIT_EMAIL,
-  payload: {
-    email,
-  },
+  email,
 });
 
 export const REQUEST_API = 'REQUEST_API';
-export const requestAPI = (currencies) => ({
+export const requestAPI = () => ({
   type: REQUEST_API,
-  payload: {
-    currencies,
-  },
 });
 
-export const removeFromAPI = () => async (dispatch) => {
-  const response = await currenciesAPI();
-  delete response.USDT;
-  dispatch(requestAPI(response));
+export const DATA = 'DATA';
+export const setAPIData = (data) => ({
+  type: DATA,
+  data,
+});
+
+export const FAIL_TO_CONNECT = 'FAIL_TO_CONNECT';
+export const failToConnect = (fail) => ({
+  type: FAIL_TO_CONNECT,
+  fail,
+});
+
+export const dispatchAPI = () => async (dispatch) => {
+  dispatch(requestAPI());
+  try {
+    const response = await currenciesAPI();
+    dispatch(setAPIData(response));
+  } catch (error) {
+    dispatch(failToConnect(error));
+  }
 };
 
 export const SUM_EXPENSES = 'SUM_EXPENSES';
 export const sumExpenses = (expenses) => ({
   type: SUM_EXPENSES,
-  payload: {
-    expenses,
-  },
-});
-
-export const ARR_EXPENSES = 'ARR_EXPENSES';
-export const arrExpenses = (arr) => ({
-  type: ARR_EXPENSES,
-  payload: {
-    arr,
-  },
+  expenses,
 });
 
 export const ALL_EXPENSES = 'ALL_EXPENSES';
@@ -46,10 +47,10 @@ export const allExpenses = (allValueBRL) => ({
   },
 });
 
-export const SUM_EDIT = 'SUM_EDIT';
-export const sumEdit = (idToEdit) => ({
-  type: SUM_EDIT,
+export const ARR_EXPENSES = 'ARR_EXPENSES';
+export const arrExpenses = (arr) => ({
+  type: ARR_EXPENSES,
   payload: {
-    idToEdit,
+    arr,
   },
 });

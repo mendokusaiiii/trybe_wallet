@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { submitEmail as submitEmailAction } from '../redux/actions/index';
+import { submitEmail } from '../redux/actions/index';
 
 const PASSWORD_LENGTH = 5;
 class Login extends React.Component {
@@ -15,7 +14,7 @@ class Login extends React.Component {
   handleChange = (event) => {
     const { email, password } = this.state;
     const { target: { name, value } } = event;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, this.verify);
     if (email.includes('@')
       && email.includes('.com')
       && password.length >= PASSWORD_LENGTH
@@ -27,16 +26,17 @@ class Login extends React.Component {
   };
 
   handleSubmitForm = () => {
-    const { submitEmail } = this.props;
+    const { dispatch, history } = this.props;
     const { email } = this.state;
-    submitEmail(email);
+    dispatch(submitEmail(email));
+    history.push('/carteira');
   };
 
   render() {
     const { email, password, submitDisable } = this.state;
     return (
       <section>
-        <form method="POST" className="form-login">
+        <form>
           <h1>Sign In</h1>
           <label htmlFor="email">
             <input
@@ -60,16 +60,14 @@ class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </label>
-          <Link to="/carteira" className="link-login">
-            <button
-              data-testid="button-login"
-              type="submit"
-              disabled={ submitDisable }
-              onClick={ this.handleSubmitForm }
-            >
-              Entrar
-            </button>
-          </Link>
+          <button
+            type="button"
+            disabled={ submitDisable }
+            onClick={ this.handleSubmitForm }
+          >
+            Entrar
+          </button>
+
         </form>
       </section>
     );
@@ -77,12 +75,8 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  submitEmail: PropTypes.func,
+  dispatch: PropTypes.func,
+  history: PropTypes.object,
 }.isRequired;
 
-const mapDispatchToProps = (dispatch) => ({
-  submitEmail: (param) => (
-    dispatch(submitEmailAction(param))),
-});
-
-export default connect(null, mapDispatchToProps)(Login);
+export default connect()(Login);
