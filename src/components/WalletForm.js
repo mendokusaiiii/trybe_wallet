@@ -15,6 +15,7 @@ class WalletForm extends Component {
     currency: 'USD',
     method: 'Dinheiro',
     tag: 'Alimentação',
+    sumAllExpenses: 0,
   };
 
   componentDidMount() {
@@ -38,13 +39,14 @@ class WalletForm extends Component {
 
   handleSubmitForm = async (event) => {
     event.preventDefault();
-    const { sumExpenses } = this.props;
+    const { sumExpenses, allExpenses } = this.props;
     const {
       value,
       description,
       currency,
       method,
       tag,
+      sumAllExpenses,
     } = this.state;
     const changeCurrent = await this.fetchCurrentAPI();
     const currencyObj = {
@@ -63,12 +65,17 @@ class WalletForm extends Component {
       method: 'Dinheiro',
       tag: 'Alimentação',
     });
+    const values = Number(value);
+    const exchanges = changeCurrent[currency].ask;
+    const valueBRL = exchanges * values;
+    const allValues = sumAllExpenses + valueBRL;
+    allExpenses(allValues);
+    this.setState({ sumAllExpenses: allValues });
   };
 
   render() {
     const { currencies } = this.props;
     const { value, description, currency } = this.state;
-    console.log(currencies);
     return (
       <div>
         <form>
