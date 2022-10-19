@@ -27,7 +27,8 @@ export const dispatchAPI = () => async (dispatch) => {
   dispatch(requestAPI());
   try {
     const response = await currenciesAPI();
-    dispatch(setAPIData(response));
+    delete response.USDT;
+    dispatch(setAPIData(Object.keys(response)));
   } catch (error) {
     dispatch(failToConnect(error));
   }
@@ -52,5 +53,13 @@ export const arrExpenses = (arr) => ({
   type: ARR_EXPENSES,
   payload: {
     arr,
+  },
+});
+
+export const SUM_EDIT = 'SUM_EDIT';
+export const sumEdit = (idToEdit) => ({
+  type: SUM_EDIT,
+  payload: {
+    idToEdit,
   },
 });

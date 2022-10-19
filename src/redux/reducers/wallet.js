@@ -5,6 +5,7 @@ import {
   SUM_EXPENSES,
   ALL_EXPENSES,
   ARR_EXPENSES,
+  SUM_EDIT,
 } from '../actions/index';
 
 const INITIAL_STATE = {
@@ -52,8 +53,15 @@ const wallet = (state = INITIAL_STATE, action) => {
   case ARR_EXPENSES: {
     return {
       ...state,
-      expenses: action.payload.expenses,
+      expenses: action.payload.arr,
       editor: false,
+    };
+  }
+  case SUM_EDIT: {
+    return {
+      ...state,
+      idToEdit: action.payload.idToEdit,
+      editor: true,
     };
   }
   default:
